@@ -40,7 +40,7 @@
 # Outputs the hexadecimal ASCII value of the given character.
 #
 #     unhex character
-# Outputs the character that has the given decimal ASCII value.
+# Outputs the character that has the given hexadecimal ASCII value.
 #
 #     max numbers...
 # Outputs the highest of the given numbers.
@@ -48,11 +48,17 @@
 #     min numbers...
 # Outputs the lowest of the given numbers.
 #
+#     si number
+# Output a human-readable version of the number using SI units.
+#
 #     totime "YYYY-MM-DD HH:MM:SS.mmm"...
 # Outputs the number of milliseconds in the given date string(s).
 #
 #     exists application
 # Succeeds if the application is in PATH and is executable.
+#
+#     firstExists file...
+# Outputs the first of the arguments that is a file which exists.
 #
 #     eol message
 # Return termination punctuation for a message, if necessary.
@@ -60,17 +66,13 @@
 #     hr pattern [length]
 # Outputs a horizontal ruler of the given length in characters or the terminal column length otherwise.
 #
-#     cloc
-# Outputs the current cursor location as two space-separated numbers: row column.
+#     csvline [-d delimiter] [-D line-delimiter]
+# Parse a CSV record from standard input, storing the fields in the CSVLINE array.
 #
-#     readwhile command [args]
-# Outputs the characters typed by the user into the terminal's input buffer while running the given command.
+#     log format [arguments...]
+# Log an event at a certain importance level.  The event is expressed as a printf(1) format argument.
 #
-#     log [format] [arguments...]
-# Log an event at a certain importance level.
-# The event is expressed as a printf(1) format argument.
-#
-#     ask [-c optionchars|-d default] [-s|-S maskchar] message...
+#     ask [-c optionchars|-d default] [-s|-S maskchar] format [arguments...]
 # Ask a question and read the user's reply to it.  Then output the result on stdout.
 #
 #     trim lines ...
@@ -79,7 +81,7 @@
 #     reverse [-0|-d delimiter] [elements ...] [<<< elements]
 # Reverse the order of the given elements.
 #
-#     order [-0|-d char] [-[cC] comparator|-n] [-t number] [elements ...] [<<< elements]
+#     order [-0|-d char] [-[fF] isDesired] [-[cC] comparator|-n|-R|-t] [-r] [-T number] [-a array|elements ...] [<<< elements]
 # Orders the elements in ascending order.
 #
 #     mutex file
@@ -90,6 +92,9 @@
 #
 #     fsleep time
 # Wait for the given (fractional) amount of seconds.
+#
+#     options [option description]...
+# Specify and handle options in arguments.
 #
 #     showHelp name description author [option description]...
 # Generate a prettily formatted usage description of the application.
@@ -103,7 +108,7 @@
 #     shorten [-p pwd] path [suffix]...
 # Shorten an absolute path for pretty printing.
 #
-#     up .../path|num
+#     up path/|num
 # Walk the current working directory up towards root num times or until path is found.
 #
 #     buildarray name terms... -- elements...
@@ -112,16 +117,16 @@
 #     inArray element array
 # Checks whether a certain element is in the given array.
 #
-#     xpathNodes query [files...]
-# Outputs every xpath node that matches the query on a separate line.
-#
 #     hideDebug [on|off]
 # Toggle Bash's debugging mode off temporarily.
+#
+#     anfunc [on|off]
+# Turn on or off support for annonymous functions.
 #
 #     stackTrace
 # Output the current script's function execution stack.
 #
-_tocHash=71e13f42e1ea82c1c7019b27a3bc71f3
+_tocHash=86607292d2b93a90682ed785021f913c
 
 
 #  ______________________________________________________________________
