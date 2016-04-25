@@ -1349,7 +1349,7 @@ shorten() {
 #  ______________________________________________________________________
 # |__ Up ________________________________________________________________|
 #
-#       up .../path|num
+#       up path/|num
 #
 # Walk the current working directory up towards root num times or until path is found.
 #
@@ -1358,12 +1358,15 @@ shorten() {
 # Prints PWD on stdout on success.
 #
 up() {
-    local up=0
+    local up=0 dir=
+    [[ $1 == */ ]] && dir=${1%/}
+
     until [[ $PWD = / ]]; do
         cd ../
 
-        if [[ $1 = .../* ]]; then
-            [[ -e ${1#.../} ]] && pwd && return
+        if [[ -n "${dir}" ]]; then
+            local cwd=${PWD##*/}
+            [[ "${dir}" == "${cwd}" ]] && pwd && return
         elif (( ++up == $1 )); then
             pwd && return
         fi
