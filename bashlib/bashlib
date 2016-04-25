@@ -433,53 +433,6 @@ hr() {
 
 
 #  ______________________________________________________________________
-# |__ CLoc ______________________________________________________________|
-#
-#       cloc
-#
-# Outputs the current cursor location as two space-separated numbers: row column.
-#
-cloc() {
-    local old=$(stty -g)
-    trap 'stty "$old"' RETURN
-    stty raw
-
-    # If the tty has input waiting then we can't read back its response.  We'd only break and pollute the tty input buffer.
-    read -t 0 < /dev/tty 2>/dev/null && return 1
-
-    printf '\e[6n' > /dev/tty
-    IFS='[;' read -dR _ row col < /dev/tty
-    printf '%d %d' "$row" "$col"
-} # _____________________________________________________________________
-
-
-
-#  ___________________________________________________________________________
-# |__ readwhile ______________________________________________________________|
-#
-#       readwhile command [args]
-#
-# Outputs the characters typed by the user into the terminal's input buffer while running the given command.
-#
-readwhile() {
-    local old=$(stty -g) in result REPLY
-    trap 'stty "$old"' RETURN
-    stty raw
-
-    "$@"
-    result=$?
-
-    while read -t 0; do
-        IFS= read -rd '' -n1 && in+=$REPLY
-    done
-    printf %s "$in"
-
-    return $result
-} # _____________________________________________________________________
-
-
-
-#  ______________________________________________________________________
 # |__ Latest ____________________________________________________________|
 #
 #       latest [file...]
