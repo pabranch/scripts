@@ -25,11 +25,11 @@
 
 
 
-#  ______________________________________________________________________ 
+#  ______________________________________________________________________
 # |                                                                      |
 # |                                            .:  TABLE OF CONTENTS  :. |
 # |______________________________________________________________________|
-# 
+#
 #     chr decimal
 # Outputs the character that has the given decimal ASCII value.
 #
@@ -76,7 +76,7 @@
 #     trim lines ...
 # Trim the whitespace off of the beginning and end of the given lines.
 #
-#     reverse [-0|-d delimitor] [elements ...] [<<< elements]
+#     reverse [-0|-d delimiter] [elements ...] [<<< elements]
 # Reverse the order of the given elements.
 #
 #     order [-0|-d char] [-[cC] comparator|-n] [-t number] [elements ...] [<<< elements]
@@ -124,7 +124,7 @@
 _tocHash=71e13f42e1ea82c1c7019b27a3bc71f3
 
 
-#  ______________________________________________________________________ 
+#  ______________________________________________________________________
 # |                                                                      |
 # |                                         .:  GLOBAL CONFIGURATION  :. |
 # |______________________________________________________________________|
@@ -169,7 +169,7 @@ genToc() {
 
 
 
-#  ______________________________________________________________________ 
+#  ______________________________________________________________________
 # |                                                                      |
 # |                                          .:  GLOBAL DECLARATIONS  :. |
 # |______________________________________________________________________|
@@ -230,7 +230,7 @@ runner=(     '> >'           \
 
 
 
-#  ______________________________________________________________________ 
+#  ______________________________________________________________________
 # |                                                                      |
 # |                                        .:  FUNCTION DECLARATIONS  :. |
 # |______________________________________________________________________|
@@ -270,7 +270,7 @@ ord() {
 #
 # Outputs the hexadecimal ASCII value of the given character.
 #
-hex() { 
+hex() {
     printf '%x' "'$1"
 } # _____________________________________________________________________
 
@@ -352,11 +352,11 @@ si() {
 #
 # When multiple date string arguments are given, multiple time strings are output, one per line.
 #
-# The fields should be in the above defined order.  The delimitor between the fields may be any one of [ -:.].
+# The fields should be in the above defined order.  The delimiter between the fields may be any one of [ -:.].
 # If a date string does not follow the defined format, the result is undefined.
 #
 # Note that this function uses a very simplistic conversion formula which does not take any special calendar
-# convenions into account.  It assumes there are 12 months in evert year, 31 days in every month, 24 hours
+# conventions into account.  It assumes there are 12 months in every year, 31 days in every month, 24 hours
 # in every day, 60 minutes in every hour, 60 seconds in every minute and 1000 milliseconds in every second.
 #
 totime() {
@@ -454,7 +454,7 @@ cloc() {
 
 
 
-#  ______________________________________________________________________
+#  ___________________________________________________________________________
 # |__ readwhile ______________________________________________________________|
 #
 #       readwhile command [args]
@@ -599,7 +599,7 @@ csvline() {
 #
 # If you prefix the command name with a p, the log message is shown as a spinner and waits for the next
 # closing statement.  Eg.
-#   
+#
 #   pinf 'Converting image'
 #       convert image.png image.jpg
 #   fnip
@@ -805,7 +805,7 @@ _logTrcColor=$grey _logDbgColor=$blue _logInfColor=$white _logWrnColor=$yellow _
 # is replied.  If not, an exit code of 1 will be returned.
 #
 ask() {
-   
+
     # Initialize the vars.
     local opt arg
     local option=
@@ -871,7 +871,7 @@ ask() {
 
         [[ -z $default || $REPLY = $default ]] \
             && return 2
-        
+
         REPLY=$default
     done
 } # _____________________________________________________________________
@@ -884,7 +884,7 @@ ask() {
 #       trim lines ...
 #
 # Trim the whitespace off of the beginning and end of the given lines.
-# Each argument is considdered one line; is treated and printed out.
+# Each argument is considered one line; is treated and printed out.
 #
 # When no arguments are given, lines will be read from standard input.
 #
@@ -898,7 +898,7 @@ trim() {
 #  ______________________________________________________________________
 # |__ Reverse ___________________________________________________________|
 #
-#       reverse [-0|-d delimitor] [elements ...] [<<< elements]
+#       reverse [-0|-d delimiter] [elements ...] [<<< elements]
 #
 # Reverse the order of the given elements.
 # Elements are read from command arguments or standard input if no element
@@ -911,16 +911,16 @@ trim() {
 # Otherwise, they are delimited by newlines.
 #
 reverse() {
-   
+
     # Initialize the vars.
-    local elements=() delimitor=$'\n' i
+    local elements=() delimiter=$'\n' i
 
     # Parse the options.
     local OPTIND=1
     while getopts :0d: opt; do
         case $opt in
-            0) delimitor=$'\0' ;;
-            d) delimitor=$OPTARG ;;
+            0) delimiter=$'\0' ;;
+            d) delimiter=$OPTARG ;;
         esac
     done
     shift "$((OPTIND-1))"
@@ -929,14 +929,14 @@ reverse() {
     if (( $# )); then
         elements=( "$@" )
     else
-        while IFS= read -r -d "$delimitor"; do
+        while IFS= read -r -d "$delimiter"; do
             elements+=("$REPLY")
         done
     fi
 
     # Iterate in reverse order.
     for (( i=${#elements[@]} - 1; i >=0; --i )); do
-        printf "%s${delimitor:-'\0'}" "${elements[i]}"
+        printf "%s${delimiter:-'\0'}" "${elements[i]}"
     done
 } # _____________________________________________________________________
 
@@ -983,16 +983,16 @@ reverse() {
 # The ordering is implemented by an insertion sort algorithm.
 #
 order() {
-   
+
     # Initialize the vars.
-    local _delimitor=$'\n' _i _j _isDesired=true _comparator=string_ascends _comparator_ascends=1 _top=0 _arrayName= _array=
+    local _delimiter=$'\n' _i _j _isDesired=true _comparator=string_ascends _comparator_ascends=1 _top=0 _arrayName= _array=
 
     # Parse the options.
     local OPTIND=1
     while getopts :0nrRd:f:F:c:C:tT:a: opt; do
         case $opt in
-            0) _delimitor=$'\0' ;;
-            d) _delimitor=$OPTARG ;;
+            0) _delimiter=$'\0' ;;
+            d) _delimiter=$OPTARG ;;
             n) _comparator=number_ascends ;;
             R) _comparator=random_ascends ;;
             t) _comparator=mtime_ascends ;;
@@ -1018,7 +1018,7 @@ order() {
             "$_isDesired" "$_element" && _elements+=("$_element")
         done
     else
-        while IFS= read -r -d "$_delimitor" _element; do
+        while IFS= read -r -d "$_delimiter" _element; do
             "$_isDesired" "$_element" && _elements+=("$_element")
         done
     fi
@@ -1039,7 +1039,7 @@ order() {
     if [[ $_array ]]; then
         declare -ga "$_array=($(printf '%q ' "${_elements[@]:0:_top}"))"
     else
-        printf "%s${_delimitor:-\0}" "${_elements[@]:0:_top}"
+        printf "%s${_delimiter:-\0}" "${_elements[@]:0:_top}"
     fi
 } # _____________________________________________________________________
 string_ascends()    { [[ $1 < $2 ]]; }
@@ -1265,7 +1265,7 @@ showHelp() {
 #       shquote [-e] [argument...]
 #
 # Shell-quote the arguments to make them safe for injection into bash code.
-# 
+#
 # The result is bash code that represents a series of words, where each
 # word is a literal string argument.  By default, quoting happens using
 # single-quotes.
@@ -1525,7 +1525,7 @@ hideDebug() {
 #       To inhibit the real command from running, we use extdebug and
 #       a DEBUG trap that returns non-0.  As a result, the actual return
 #       code is lost.
-# 
+#
 anfunc() {
     case "$1" in
         on)
@@ -1553,15 +1553,15 @@ _anfunc_trap() {
                 # Replace the word by the new function's name.
                 words[w]="_f$f"
     done
-    
+
     # Run the command.
     eval "$(printf '%q ' "${words[@]}")"
-    
+
     # Clean up the anfuncs.
     for ((; f>0; --f)); do
         unset -f "_f$f"
     done
-    
+
     # Inhibit the real command's execution.
     return 1
 }
@@ -1588,7 +1588,7 @@ stackTrace() {
 
 
     # Search through the map.
-    local arg=0 
+    local arg=0
     for stack in "${!FUNCNAME[@]}"; do
         (( stack+1 >= ${#BASH_SOURCE[@]} )) && break
 
@@ -1610,7 +1610,7 @@ stackTrace() {
 
 
 
-#  ______________________________________________________________________ 
+#  ______________________________________________________________________
 # |                                                                      |
 # |                                                  .:  ENTRY POINT  :. |
 # |______________________________________________________________________|
@@ -1633,5 +1633,5 @@ stackTrace() {
 
 :
 :                                                   .:  END SOURCING  :.
-:  ______________________________________________________________________ 
+:  ______________________________________________________________________
 :
